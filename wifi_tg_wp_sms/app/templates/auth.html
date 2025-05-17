@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-form">
+        <h2>Авторизация</h2>
+        <form id="authForm">
+            <div class="form-group">
+                <label>Метод авторизации:</label>
+                <select id="auth_method" class="form-control">
+                    <option value="telegram">Telegram</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="sms">SMS</option>
+                </select>
+            </div>
+
+            <div id="telegram_auth" style="display:none;">
+                <button type="button" class="btn" onclick="initTelegramAuth()">
+                    Войти через Telegram
+                </button>
+            </div>
+
+            <div id="whatsapp_auth" style="display:none;">
+                <div class="form-group">
+                    <input type="tel" id="whatsapp_phone" placeholder="+375XXXXXXXXX">
+                    <button type="button" id="whatsapp_send" class="btn">Отправить код</button>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="whatsapp_otp" placeholder="Код из WhatsApp">
+                </div>
+            </div>
+
+            <div id="sms_auth" style="display:none;">
+                <div class="form-group">
+                    <input type="tel" id="sms_phone" placeholder="+375XXXXXXXXX">
+                    <button type="button" id="sms_send" class="btn">Отправить код</button>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="sms_otp" placeholder="Код из SMS">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn">Войти</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+<!-- Добавление обработки flash-сообщений -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<!-- Исправление формы -->
+<form method="POST" action="{{ url_for('auth.login') }}">
+  <input type="text" name="identifier" required>
+  <input type="password" name="password" required>
+  <button type="submit">Войти</button>
+</form>

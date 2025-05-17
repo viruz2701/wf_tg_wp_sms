@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Кабинет клиента{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Добро пожаловать, {{ current_user.username }}</h1>
+    
+    <div class="dashboard-grid">
+        <div class="stats-card">
+            <h3>Сегодня</h3>
+            <p class="stat-value">{{ stats.today }}</p>
+        </div>
+        
+        <div class="stats-card">
+            <h3>Всего сессий</h3>
+            <p class="stat-value">{{ stats.total }}</p>
+        </div>
+        
+        <div class="stats-card">
+            <h3>Активные</h3>
+            <p class="stat-value">{{ stats.active }}</p>
+        </div>
+    </div>
+
+    <h2>Последние сессии</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>MAC</th>
+                <th>IP</th>
+                <th>Начало</th>
+                <th>Трафик</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in sessions %}
+            <tr>
+                <td>{{ session.mac_address }}</td>
+                <td>{{ session.internal_ip }}</td>
+                <td>{{ session.start_time.strftime('%d.%m.%Y %H:%M') }}</td>
+                <td>{{ (session.data_used / 1024 / 1024)|round(2) }} MB</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

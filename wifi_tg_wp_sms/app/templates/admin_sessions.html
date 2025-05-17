@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>История сессий</h1>
+    
+    <div class="filters">
+        <form method="GET">
+            <input type="date" name="start_date">
+            <input type="date" name="end_date">
+            <select name="client_id">
+                <option value="">Все клиенты</option>
+                {% for client in clients %}
+                <option value="{{ client.id }}">{{ client.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn">Фильтровать</button>
+        </form>
+    </div>
+
+    <table class="sessions-table">
+        <thead>
+            <tr>
+                <th>Клиент</th>
+                <th>Пользователь</th>
+                <th>MAC</th>
+                <th>Начало</th>
+                <th>Длительность</th>
+                <th>Трафик</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in sessions.items %}
+            <tr>
+                <td>{{ session.client.name }}</td>
+                <td>{{ session.user.username }}</td>
+                <td>{{ session.mac_address }}</td>
+                <td>{{ session.start_time.strftime('%d.%m.%Y %H:%M') }}</td>
+                <td>{{ session.calculate_duration() }}</td>
+                <td>{{ session.format_data_used() }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if sessions.has_prev %}
+        <a href="{{ url_for('admin.sessions', page=sessions.prev_num) }}" class="btn">← Назад</a>
+        {% endif %}
+        <span>Страница {{ sessions.page }} из {{ sessions.pages }}</span>
+        {% if sessions.has_next %}
+        <a href="{{ url_for('admin.sessions', page=sessions.next_num) }}" class="btn">Вперед →</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

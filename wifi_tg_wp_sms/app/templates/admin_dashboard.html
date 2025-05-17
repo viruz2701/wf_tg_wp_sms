@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Админ панель{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Административная панель</h1>
+    
+    <div class="dashboard-grid">
+        <div class="stats-card">
+            <h3>Клиентов</h3>
+            <p class="stat-value">{{ clients|length }}</p>
+        </div>
+        
+        <div class="stats-card">
+            <h3>Пользователей</h3>
+            <p class="stat-value">{{ total_users }}</p>
+        </div>
+        
+        <div class="stats-card">
+            <h3>Активных сессий</h3>
+            <p class="stat-value">{{ active_sessions }}</p>
+        </div>
+    </div>
+
+    <h2>Последние клиенты</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Владелец</th>
+                <th>MikroTik IP</th>
+                <th>Дата создания</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+            <tr>
+                <td>{{ client.name }}</td>
+                <td>{{ client.owner.username }}</td>
+                <td>{{ client.mikrotik_ip }}</td>
+                <td>{{ client.created_at.strftime('%d.%m.%Y') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

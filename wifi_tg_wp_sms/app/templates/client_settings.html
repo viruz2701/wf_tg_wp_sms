@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Настройки клиента</h1>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label>Название точки доступа:</label>
+            <input type="text" name="hotspot_name" value="{{ client.hotspot_name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label>IP MikroTik:</label>
+            <input type="text" name="mikrotik_ip" value="{{ client.mikrotik_ip }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label>СМС API ключ:</label>
+            <input type="password" name="sms_api_key" value="{{ client.sms_api_key }}">
+        </div>
+        
+        <div class="form-group">
+            <label>Имя отправителя SMS:</label>
+            <input type="text" name="sms_sender_name" value="{{ client.sms_sender_name }}">
+        </div>
+        
+        <div class="form-group">
+            <label>Методы авторизации:</label>
+            <div>
+                <label>
+                    <input type="checkbox" name="telegram_auth" 
+                           {% if client.telegram_auth_enabled %}checked{% endif %}>
+                    Telegram
+                </label>
+                <label>
+                    <input type="checkbox" name="whatsapp_auth" 
+                           {% if client.whatsapp_auth_enabled %}checked{% endif %}>
+                    WhatsApp
+                </label>
+                <label>
+                    <input type="checkbox" name="sms_auth" 
+                           {% if client.sms_auth_enabled %}checked{% endif %}>
+                    SMS
+                </label>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn">Сохранить</button>
+    </form>
+</div>
+{% endblock %}
